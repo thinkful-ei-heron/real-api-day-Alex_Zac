@@ -1,8 +1,8 @@
 import $ from 'jquery';
 
 import store from './store';
-import item from './item';
 import api from './api';
+import items from './item';
 
 const generateItemElement = function (item) {
   let itemTitle = `<span class="shopping-item shopping-item__checked">${item.name}</span>`;
@@ -84,8 +84,18 @@ const handleEditShoppingItemSubmit = function () {
     event.preventDefault();
     const id = getItemIdFromElement(event.currentTarget);
     const itemName = $(event.currentTarget).find('.shopping-item').val();
-    store.findAndUpdateName(id, itemName);
+    const obj = {name: itemName};
+    api.updateItem(id, obj);
+    let newItemName = store.findAndUpdate(id, itemName);
+
+    api.updateItem(newItemName)
+    .then(res => res.json())
+    .then((newItem) => {
+      store.addItem(newItem);
+      render();
+    });
     render();
+
   });
 };
 
