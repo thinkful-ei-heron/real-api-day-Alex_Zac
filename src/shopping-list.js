@@ -34,6 +34,8 @@ const generateShoppingItemsString = function (shoppingList) {
 };
 
 const render = function () {
+  $('.errorHeader').remove();
+
   // Filter item list if store prop is true by item.checked === false
   let items = [...store.items];
   if (store.hideCheckedItems) {
@@ -44,6 +46,8 @@ const render = function () {
   const shoppingListItemsString = generateShoppingItemsString(items);
 
   // insert that HTML into the DOM
+  $('#error-box').html(`<h2 class="errorHeader">${store.error}</h2>`);
+  // $('#error-box').removeClass('hidden');
   $('.js-shopping-list').html(shoppingListItemsString);
 };
 
@@ -53,9 +57,15 @@ const handleNewItemSubmit = function () {
     const newItemName = $('.js-shopping-list-entry').val();
     $('.js-shopping-list-entry').val('');
     api.createItem(newItemName)
-      .then(res => res.json())
+      // .then(res => res.json())
       .then((newItem) => {
         store.addItem(newItem);
+        render();
+      })
+      .catch(err => {
+        console.log(store.error);
+        store.error = err.message;
+        console.log(store.error);
         render();
       });
   });
@@ -71,11 +81,12 @@ const handleDeleteItemClicked = function () {
   $('.js-shopping-list').on('click', '.js-item-delete', event => {
     const id = getItemIdFromElement(event.currentTarget);
     api.deleteItem(id)
-      .then(res => res.json())
+      // .then(res => res.json())
       .then(() => {
         store.findAndDelete(id);
         render();
-      });
+      })
+      .catch(err => alert(err.message));
   });
 };
 
@@ -88,11 +99,11 @@ const handleEditShoppingItemSubmit = function () {
     const obj = {name: itemName};
     
     api.updateItem(id, obj)
-      .then(res => res.json())
+      // .then(res => res.json())
       .then(() => {
         store.findAndUpdate(id, obj);
         render();
-    });
+      });
   });
 };
 
@@ -105,7 +116,7 @@ const handleItemCheckClicked = function () {
     console.log(obj);
     
     api.updateItem(id, obj)
-      .then(res => res.json())
+      // .then(res => res.json())
       .then(() => {
         store.findAndUpdate(id, obj);
         render();

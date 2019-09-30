@@ -51,3 +51,13 @@ button:hover {
 .shopping-item__checked {
   text-decoration: line-through;
 }
+
+#error-box {
+  text-align: center;
+  color: red;
+  font-size: 50px;
+}
+
+.hidden {
+  display: hidden;
+}
