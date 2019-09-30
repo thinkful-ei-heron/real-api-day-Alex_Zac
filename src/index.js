@@ -8,16 +8,15 @@ import api from './api';
 import store from './store';
 
 const main = function () {
-  // api.getItems()
-  //   .then(res => res.json())
-  //   .then(res => console.log(res));
-  // console.log(api.BASE_URL);
   api.getItems()
-    .then(res => res.json())
-    .then((items) => {
-      items.forEach((item) => store.addItem(item));
-      shoppingList.render();
-    });
+  .then(res => res.json())
+  .then((items) => {
+    items.forEach((item) => store.addItem(item));
+    shoppingList.render();
+
+  });
+
+  
 
   shoppingList.bindEventListeners();
   shoppingList.render();
