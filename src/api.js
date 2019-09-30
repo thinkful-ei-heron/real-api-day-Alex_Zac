@@ -5,11 +5,9 @@ const getItems = function () {
 };
 
 const createItem = function (name) {
-  let newItem = JSON.stringify({
-    name
-  })
-  return fetch(`${BASE_URL}/items`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: newItem })
-}
+  let newItem = JSON.stringify({ name });
+  return fetch(`${BASE_URL}/items`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: newItem });
+};
 
 export default {
   getItems,
