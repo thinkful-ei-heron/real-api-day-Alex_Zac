@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 import store from './store';
 import api from './api';
+import items from './item';
 
 const generateItemElement = function (item) {
   let itemTitle = `<span class="shopping-item shopping-item__checked">${item.name}</span>`;
@@ -67,16 +68,17 @@ const getItemIdFromElement = function (item) {
 };
 
 const handleDeleteItemClicked = function () {
-  // like in `handleItemCheckClicked`, we use event delegation
   $('.js-shopping-list').on('click', '.js-item-delete', event => {
-    // get the index of the item in store.items
     const id = getItemIdFromElement(event.currentTarget);
-    // delete the item
-    store.findAndDelete(id);
-    // render the updated shopping list
-    render();
+    api.deleteItem(id)
+      .then(res => res.json())
+      .then(() => {
+        store.findAndDelete(id);
+        render();
+      });
   });
 };
+
 
 const handleEditShoppingItemSubmit = function () {
   $('.js-shopping-list').on('submit', '.js-edit-item', event => {
@@ -128,7 +130,7 @@ const bindEventListeners = function () {
   handleEditShoppingItemSubmit();
   handleToggleFilterClick();
 };
-// This object contains the only exposed methods from this module:
+
 export default {
   render,
   bindEventListeners

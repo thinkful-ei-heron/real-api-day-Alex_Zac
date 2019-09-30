@@ -19,10 +19,27 @@ const updateItem = function (id, obj) {
     headers: { 'Content-Type' : 'application/json' },
     body: modObj
   });
-}
+};
+
+const deleteItem = function (id) {
+  return fetch(`${BASE_URL}/items/${id}`, {
+    method: 'DELETE'
+  });
+};
+
+// function deleteData(item, url) {
+//   fetch(url + '/' + item, {
+//     method: 'delete'
+//   }).then(response =>
+//     response.json().then(json => {
+//       return json;
+//     })
+//   );
+// }
 
 export default {
   getItems,
   createItem,
-  updateItem
+  updateItem,
+  deleteItem
 };
